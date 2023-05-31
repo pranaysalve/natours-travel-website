@@ -43,20 +43,25 @@ app.use(express.static(path.join(__dirname, "/starter/public")));
 //     next();
 //   }
 // });
-app.use((req, res, next) => {
-  res.setHeader(
-    "Content-Security-Policy",
-    "default-src 'self'; connect-src 'self' ws://localhost:61265/;"
-  );
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader(
+//     "Content-Security-Policy",
+//     "default-src 'self'; connect-src 'self' ws://localhost:56794/ ws://localhost:61265/;"
+//   );
+//   next();
+// });
 
 app.use(
   helmet.contentSecurityPolicy({
     useDefaults: true,
     directives: {
-      //   `defaultSrc: ["'self'"],
-      //   connectSrc: ["'self'", "ws://localhost:56794/"],`
+      defaultSrc: ["'self'"],
+      connectSrc: [
+        "'self'",
+        "ws://localhost:56794/",
+        "ws://localhost:61265/",
+        "ws://localhost:57579/",
+      ],
       frameSrc: ["'self'", "https://js.stripe.com/"],
       scriptSrc: [
         "'self'",
@@ -65,6 +70,7 @@ app.use(
         "http://localhost:56794/",
         "https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js",
       ],
+      formAction: ["'self'", "http://127.0.0.1:3000"],
     },
   })
 );
